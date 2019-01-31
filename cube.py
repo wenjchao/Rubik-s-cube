@@ -54,9 +54,61 @@ class cube:
         self.state[19] = self.state[8]
         self.state[8] = temp
 
+    #順時針轉動紅色面
+    def red( self ):
+        temp = self.state[0]
+        self.state[0] = [ self.state[2][0] , cube.corner( self.state[2][1] , 1) ]
+        self.state[2] = [ self.state[14][0] , cube.corner( self.state[14][1] , -1) ]
+        self.state[14] = [ self.state[12][0] , cube.corner( self.state[12][1] , 1) ]
+        self.state[12] = [ temp[0] , cube.corner( temp[1] , -1) ]
+        temp = self.state[1]
+        self.state[1] = [ self.state[9][0] , cube.side( self.state[9][1] ) ]
+        self.state[9] = [ self.state[13][0] , cube.side( self.state[13][1] ) ]
+        self.state[13] = [ self.state[8][0] , cube.side( self.state[8][1] ) ]
+        self.state[8] = [ temp[0] , cube.side( temp[1] ) ]
+
+    #逆時針轉動紅色面
+    def antired( self ):
+        temp = self.state[0]
+        self.state[0] = [ self.state[12][0] , cube.corner( self.state[12][1] , 1) ]
+        self.state[12] = [ self.state[14][0] , cube.corner( self.state[14][1] , -1) ]
+        self.state[14] = [ self.state[2][0] , cube.corner( self.state[2][1] , 1) ]
+        self.state[2] = [ temp[0] , cube.corner( temp[1] , -1) ]
+        temp = self.state[1]
+        self.state[1] = [ self.state[8][0] , cube.side( self.state[8][1] ) ]
+        self.state[8] = [ self.state[13][0] , cube.side( self.state[13][1] ) ]
+        self.state[13] = [ self.state[9][0] , cube.side( self.state[9][1] ) ]
+        self.state[9] = [ temp[0] , cube.side( temp[1] ) ]
+
+    #順時針轉動藍色面
+    def green( self ):
+        temp = self.state[4]
+        self.state[4] = [ self.state[16][0] , cube.corner( self.state[16][1] , -1) ]
+        self.state[16] = [ self.state[14][0] , cube.corner( self.state[14][1] , 1) ]
+        self.state[14] = [ self.state[2][0] , cube.corner( self.state[2][1] , -1) ]
+        self.state[2] = [ temp[0] , cube.corner( temp[1] , 1) ]
+        temp = self.state[3]
+        self.state[3] = self.state[10]
+        self.state[10] = self.state[15]
+        self.state[15] = self.state[9]
+        self.state[9] = temp
+
+    #逆時針轉動藍色面
+    def antigreen( self ):
+        temp = self.state[14]
+        self.state[14] = [ self.state[16][0] , cube.corner( self.state[16][1] , -1) ]
+        self.state[16] = [ self.state[4][0] , cube.corner( self.state[4][1] , 1) ]
+        self.state[4] = [ self.state[2][0] , cube.corner( self.state[2][1] , -1) ]
+        self.state[2] = [ temp[0] , cube.corner( temp[1] , 1) ]
+        temp = self.state[3]
+        self.state[3] = self.state[9]
+        self.state[9] = self.state[15]
+        self.state[15] = self.state[10]
+        self.state[10] = temp
+
 
 a=cube()
-a.blue()
+a.green()
 print(a.state)
-a.antiblue()
+a.antigreen()
 print(a.state)
