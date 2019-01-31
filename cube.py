@@ -158,7 +158,7 @@ class cube:
         self.state[5] = self.state[7]
         self.state[7] = temp
 
-    #順時針轉動白色面
+    #順時針轉動黃色面
     def yellow( self ):
         temp = self.state[12]
         self.state[12] = self.state[14]
@@ -171,7 +171,7 @@ class cube:
         self.state[17] = self.state[19]
         self.state[19] = temp
 
-    #逆時針轉動白色面
+    #逆時針轉動黃色面
     def antiyellow( self ):
         temp = self.state[12]
         self.state[12] = self.state[18]
@@ -185,22 +185,4 @@ class cube:
         self.state[15] = temp
 
 a=cube()
-a.antiyellow()
-a.antiyellow()
-a.antired()
-a.antiyellow()
-a.red()
-a.antiyellow()
-a.red()
-a.yellow()
-a.red()
-a.antiyellow()
-a.antired()
-a.yellow()
-a.red()
-a.yellow()
-a.red()
-a.red()
-a.antiyellow()
-a.antired()
 print(a.state)
