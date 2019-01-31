@@ -1,8 +1,14 @@
+finished = [[0,0],[1,0],[2,0],[3,0],[4,0],[5,0],[6,0],[7,0],[8,0],[9,0],[10,0],[11,0],[12,0],[13,0],[14,0],[15,0],[16,0],[17,0],[18,0],[19,0]]
+
+
 class cube:
     # 角塊狀態形容：以白、黃為基準，面朝白黃面為0、順時針轉為1、順時針轉兩次為2
     # 邊塊狀態形容：白黃 > 紅橘 > 藍綠，該角塊大的那面如果在大的那面正確則為0，不然則為1
     # 第i個位置目前是第state[i]塊
-    state=[[0,0],[1,0],[2,0],[3,0],[4,0],[5,0],[6,0],[7,0],[8,0],[9,0],[10,0],[11,0],[12,0],[13,0],[14,0],[15,0],[16,0],[17,0],[18,0],[19,0]]
+    state = list()
+
+    def init( self ):
+        self.state = list(finished)
 
     #角塊的轉向(plusorminus=1為順時針，plusorminus=-1則為逆時針)
     def corner( num , plusorminus ):
@@ -28,6 +34,7 @@ class cube:
         if num == 0:
             return 1
 
+    #所有轉動，共12種
     def spin( self , index):
 
         #順時針轉動藍色面
@@ -186,10 +193,54 @@ class cube:
             self.state[17] = self.state[15]
             self.state[15] = temp
 
+    #暴力破解
+    def fixxx( self ):
+
+
+        num = 0
+        if self.state == finished:
+            print("finish", num)
+            return num
+
+        waited = [ self ]
+
+        while 'TRUE':
+
+            #BFS
+            for i in range(12):
+                temp = cube()
+                temp.state = list(waited[0].state)
+                temp.spin(i)
+                num += 1
+                if num % 10000 == 0:
+                    print(num)
+
+                #終止條件
+                if temp.state == finished:
+                    print("finished!", num)
+                    return num
+
+                waited.append(temp)
+
+            waited.pop(0)
+
+    def counting( self ):
+        num = int ( self.fixxx() )
+        count = list()
+
+        while num > 0:
+            temp = int(num % 12)
+            if temp == 0:
+                temp = 12
+            count.append( temp + ( temp % 2 - 1 ) * 2 )
+            num = (num - temp) / 12
+
+        return count
+
 a=cube()
-for i in [11,11,5,11,4,11,4,10,4,11,5,10,4,10,4,4,11,5]:
+a.init()
+
+for i in [2,4,11,2,5,6]:
     a.spin(i)
-print(a.state)
-for i in [11,11,1,11,0,11,0,10,0,11,1,10,0,10,0,0,11,1]:
-    a.spin(i)
-print(a.state)
+
+print( a.counting() )
