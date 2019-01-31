@@ -1,5 +1,5 @@
-finished = [[0,0],[1,0],[2,0],[3,0],[4,0],[5,0],[6,0],[7,0],[8,0],[9,0],[10,0],[11,0],[12,0],[13,0],[14,0],[15,0],[16,0],[17,0],[18,0],[19,0]]
-
+#一顆轉好的方塊
+FINISHED = [[0,0],[1,0],[2,0],[3,0],[4,0],[5,0],[6,0],[7,0],[8,0],[9,0],[10,0],[11,0],[12,0],[13,0],[14,0],[15,0],[16,0],[17,0],[18,0],[19,0]]
 
 class cube:
     # 角塊狀態形容：以白、黃為基準，面朝白黃面為0、順時針轉為1、順時針轉兩次為2
@@ -7,8 +7,9 @@ class cube:
     # 第i個位置目前是第state[i]塊
     state = list()
 
+    #把方塊轉好
     def init( self ):
-        self.state = list(finished)
+        self.state = list( FINISHED )
 
     #角塊的轉向(plusorminus=1為順時針，plusorminus=-1則為逆時針)
     def corner( num , plusorminus ):
@@ -196,10 +197,11 @@ class cube:
     #暴力破解
     def fixxx( self ):
 
-
+        #計數，供counting使用
         num = 0
-        if self.state == finished:
-            print("finish", num)
+
+        if self.state == FINISHED:
+            print("finished!", num)
             return num
 
         waited = [ self ]
@@ -212,11 +214,13 @@ class cube:
                 temp.state = list(waited[0].state)
                 temp.spin(i)
                 num += 1
+
+                #進度追蹤
                 if num % 10000 == 0:
                     print(num)
 
                 #終止條件
-                if temp.state == finished:
+                if temp.state == FINISHED:
                     print("finished!", num)
                     return num
 
@@ -224,6 +228,7 @@ class cube:
 
             waited.pop(0)
 
+    #利用fixxx的num回推步驟，透過count回傳
     def counting( self ):
         num = int ( self.fixxx() )
         count = list()
