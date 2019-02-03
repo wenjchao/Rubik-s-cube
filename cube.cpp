@@ -1,4 +1,5 @@
 #include<iostream>
+#include <queue>
 using namespace std;
 
 int FINISHED[40] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
@@ -53,7 +54,7 @@ public:
 		}
 	}
 
-	void spin( int index ){
+	void spin( int *state, int index ){
 
 		temp = state [ SIDES[ index ][0] ];
 		state [ SIDES[ index ][0] ] = state [ SIDES[ index ][6] ];
@@ -98,6 +99,53 @@ public:
 		}
 
 	}
+
+	int fixxx(){
+
+		temp = 0;
+		int counting = 0;
+		for( int k = 0 ; k < 40 ; k ++ ){
+			if( state [ k ] != FINISHED [k] ){
+				temp = 1;
+				break;
+			}
+		}
+		if( temp == 0 )
+			return 0;
+
+		queue<int> waited;
+		for(int r = 0 ; r < 40 ; r ++){
+			waited.push( state[r] );
+		}
+		int tempstate[40];
+
+		while (1) {
+
+			for(int r = 0 ; r < 40 ; r ++){
+				tempstate[r] = waited.front();
+				waited.pop();
+			}
+
+			for(int l = 0 ; l < 12 ; l ++){
+
+				spin( tempstate , l );
+				counting++;
+				if(counting % 100000 == 0)
+					cout<<counting<<endl;
+				temp = 0;
+				for(int t = 0 ; t < 40 ; t ++){
+					waited.push( tempstate[t] );
+					if (tempstate [t] != FINISHED[t] )
+						temp = 1;
+				}
+				if(temp == 0)
+					return counting;
+				spin( tempstate , l + 1 - 2*( l % 2 ) );
+			}
+
+		}
+
+	}
 };
 
 int main(){
@@ -106,9 +154,19 @@ int main(){
 	for (int i = 0 ; i < 40 ; i ++ )
 		cout<<a.state[i]<<"  ";
 	cout<<endl;
-	a.spin(11);
+	a.spin(a.state,10);
+	a.spin(a.state,1);
+	a.spin(a.state,5);
+	a.spin(a.state,6);
+	a.spin(a.state,10);
+	a.spin(a.state,1);
+	a.spin(a.state,5);
+	a.spin(a.state,6);
 	for (int i = 0 ; i < 40 ; i ++ )
 		cout<<a.state[i]<<"  ";
+		
 	cout<<endl;
+	cout<<a.fixxx();
+	
 	return 0;
 }
