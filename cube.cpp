@@ -56,6 +56,9 @@ public:
 
 	void spin( int *state, int index ){
 
+		if (index == 12)
+			return;
+
 		temp = state [ SIDES[ index ][0] ];
 		state [ SIDES[ index ][0] ] = state [ SIDES[ index ][6] ];
 		state [ SIDES[ index ][6] ] = state [ SIDES[ index ][4] ];
@@ -146,6 +149,63 @@ public:
 		}
 
 	}
+
+	int countnums(){
+
+		int counts[13][13][13][13][40];
+		int index = 0
+		int num = 0;
+		for( int i1 = 0 ; i1 < 13 ; i1++ ){
+			for ( int i2 = 0 ; i2 < 13 ; i2++ ){
+				for ( int i3 = 0 ; i3 < 13 ; i3++ ){
+					for ( int i4 = 0 ; i4 < 13 ; i4++ ){
+						for(int r = 0 ; r < 40 ; r ++){
+							counts[i1][i2][i3][i4][r] = state[r];
+						}
+						spin ( counts[i1][i2][i3][i4] , i1 );
+						spin ( counts[i1][i2][i3][i4] , i2 );
+						spin ( counts[i1][i2][i3][i4] , i3 );
+						spin ( counts[i1][i2][i3][i4] , i4 );
+					}
+				}
+			}
+		}
+
+		for( i1 = 0 ; i1 < 13 ; i1++ ){
+			for ( i2 = 0 ; i2 < 13 ; i2++ ){
+				for ( i3 = 0 ; i3 < 13 ; i3++ ){
+					for ( i4 = 0 ; i4 < 13 ; i4++ ){
+
+						for( int j1 = 0 ; j1 < 13 ; j1++ ){
+							for ( int j2 = 0 ; j2 < 13 ; j2++ ){
+								for ( int j3 = 0 ; j3 < 13 ; j3++ ){
+									for ( int j4 = 0 ; j4 < 13 ; j4++ ){
+										for( r = 0 ; r < 40 ; r++ ){
+
+											if(counts[i1][i2][i3][i4][r] != counts[j1][j2][j3][j4][r]){
+												index = 1;
+											}
+
+											if (index == 0){
+												num++;
+												for( k = 0 ; k < 40 ; k++ ){
+													counts[j1][j2][j3][j4][k] = 10000000-num;
+												}
+											}
+
+										}
+									}
+								}
+							}
+						}
+
+					}
+				}
+			}
+		}
+		cout<<num;
+	}
+
 };
 
 int main(){
@@ -154,19 +214,13 @@ int main(){
 	for (int i = 0 ; i < 40 ; i ++ )
 		cout<<a.state[i]<<"  ";
 	cout<<endl;
-	a.spin(a.state,10);
-	a.spin(a.state,1);
-	a.spin(a.state,5);
-	a.spin(a.state,6);
-	a.spin(a.state,10);
-	a.spin(a.state,1);
-	a.spin(a.state,5);
-	a.spin(a.state,6);
+	a.spin(a.state,12);
+
 	for (int i = 0 ; i < 40 ; i ++ )
 		cout<<a.state[i]<<"  ";
-		
+
 	cout<<endl;
 	cout<<a.fixxx();
-	
+
 	return 0;
 }
